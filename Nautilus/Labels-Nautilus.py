@@ -84,6 +84,22 @@ TRANSLATIONS = {
             'slate': 'Leisteen'
         }
     },
+    'pl': {
+        'label': 'Etykieta',
+        'remove_label': 'Usuń etykietę',
+        'tip_assign': 'Przypisz kolorowe etykiety do plików',
+        'tip_remove': 'Usuń kolorową etykietę z plików',
+        'colors': {
+            'blueberry': 'Jagoda',
+            'mint': 'Mięta',
+            'banana': 'Banan',
+            'orange': 'Pomarańczowy',
+            'strawberry': 'Truskawka',
+            'grape': 'Winogrono',
+            'cocoa': 'Kakao',
+            'slate': 'Łupek'
+        }
+    },
     'it': {
         'label': 'Etichetta',
         'remove_label': 'Rimuovi etichetta',
@@ -137,6 +153,22 @@ TRANSLATIONS = {
             'cocoa': 'ココア',
             'slate': 'スレート'
         }
+    },
+    'ko': {
+        'label': '라벨',
+        'remove_label': '라벨 제거',
+        'tip_assign': '파일에 색상 라벨 지정',
+        'tip_remove': '파일에서 색상 라벨 제거',
+        'colors': {
+            'blueberry': '블루베리',
+            'mint': '민트',
+            'banana': '바나나', 
+            'orange': '오렌지',
+            'strawberry': '딸기',
+            'grape': '포도',
+            'cocoa': '코코아',
+            'slate': '슬레이트'
+       }
     },
     'zh-cn': {
         'label': '标签',
