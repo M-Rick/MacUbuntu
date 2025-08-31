@@ -1,7 +1,7 @@
 A Nautilus Extensions set:
 
 - Duplicate to ducplicate files directly. The extension will add a ` - copy` suffix to the ducplicated file.
-- Link to create a link. THis feature exists in Nemo, but not in Nautilus.
+- Link to create a link. This feature exists in Nemo, but not in Nautilus.
 - Lock manages files locking by adding an additionnal "Lock/Unlock" menu
 - Labels adds a color label on files, like in macOS and Pantheon Files and compatible with Nemo. Labels is compatible with Folder Color.
 
