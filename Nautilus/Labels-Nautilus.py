@@ -410,7 +410,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
 
         remove_item = Nautilus.MenuItem(
             name='ColorLabels::remove',
-            label=f'❌ {self.translations["remove_label"]}',
+            label=f'{self.translations["remove_label"]}',
             tip=self.translations['tip_remove']
         )
         remove_item.connect('activate', self.remove_color_label, files)
