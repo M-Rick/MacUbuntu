@@ -1,8 +1,10 @@
 A Nautilus Extensions set:
 
 - Duplicate to ducplicate files directly. The extension will add a ` - copy` suffix to the ducplicated file.
-- Lock to manage files locking by adding an additionnal "Lock/Unlock" menu
-- Labels to add color labels on files, like in macOS and Pantheon Files and compatible with Nemo. Labels is compatible with Folder Color.
+- Lock manages files locking by adding an additionnal "Lock/Unlock" menu
+- Labels adds a color label on files, like in macOS and Pantheon Files and compatible with Nemo. Labels is compatible with Folder Color.
+
+All extensions are translated in English, French, German, Dutch, Polish, Italian, Spanish, Japanese, Korean, Simplified Chinese, Traditionnal Chinese and Russian.
 
 The Labels Nautilus extension
 
