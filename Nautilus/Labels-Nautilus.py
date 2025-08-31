@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """
-Extension Nautilus pour les labels de couleur (comme macOS)
-À placer dans : ~/.local/share/nautilus-python/extensions/color_labels.py
+A Nautilus Extension to add color labels on files, like in macOS and Pantheon Files
+Place in: ~/.local/share/nautilus-python/extensions/color_labels.py
 """
 import os
 import locale
+import subprocess
+from pathlib import Path
 from gi.repository import Nautilus, GObject, Gio
 from urllib.parse import unquote
 
@@ -289,6 +291,78 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
         super().__init__()
         self.current_language = get_system_language()
         self.translations = TRANSLATIONS.get(self.current_language, TRANSLATIONS['en'])
+        
+        # Vérifier et créer les emblèmes si nécessaire
+        self.ensure_emblems_exist()
+
+    def ensure_emblems_exist(self):
+        """Vérifie et crée les emblèmes SVG s'ils n'existent pas"""
+        emblem_dir = Path.home() / '.local' / 'share' / 'icons' / 'hicolor' / '16x16' / 'emblems'
+        
+        try:
+            # Créer le répertoire s'il n'existe pas
+            emblem_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Vérifier si tous les emblèmes existent
+            missing_emblems = []
+            for color_id, color_info in self.COLORS.items():
+                emblem_file = emblem_dir / f"{color_info['emblem']}.svg"
+                if not emblem_file.exists():
+                    missing_emblems.append((color_id, color_info))
+            
+            # Créer les emblèmes manquants
+            if missing_emblems:
+                print(f"Creating {len(missing_emblems)} missing color emblems...")
+                for color_id, color_info in missing_emblems:
+                    self.create_emblem_svg(color_info['emblem'], color_info['hex'], emblem_dir)
+                
+                # Mettre à jour le cache d'icônes
+                self.update_icon_cache()
+                
+        except Exception as e:
+            print(f"Error ensuring emblems exist: {e}")
+
+    def create_emblem_svg(self, emblem_name, hex_color, emblem_dir):
+        """Crée un fichier SVG d'emblème coloré"""
+        svg_content = f'''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 4.233333 4.233333"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1">
+    <ellipse
+       style="fill:{hex_color};fill-opacity:1;stroke-width:0.264999"
+       id="path1"
+       cx="2.1166666"
+       cy="2.1166666"
+       rx="2.1170001"
+       ry="2.1166666" />
+  </g>
+</svg>'''
+        
+        try:
+            svg_file = emblem_dir / f"{emblem_name}.svg"
+            svg_file.write_text(svg_content)
+            print(f"✓ Created: {svg_file}")
+        except Exception as e:
+            print(f"Error creating {emblem_name}.svg: {e}")
+
+    def update_icon_cache(self):
+        """Met à jour le cache d'icônes"""
+        try:
+            hicolor_dir = Path.home() / '.local' / 'share' / 'icons' / 'hicolor'
+            subprocess.run(['gtk-update-icon-cache', str(hicolor_dir)], 
+                         check=False, capture_output=True)
+            print("✓ Icon cache updated")
+        except Exception as e:
+            print(f"Warning: Could not update icon cache: {e}")
 
     def get_file_items(self, files):
         """Crée le menu Label avec sous-menu de couleurs"""
