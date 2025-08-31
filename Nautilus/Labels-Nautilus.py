@@ -84,6 +84,24 @@ TRANSLATIONS = {
             'slate': 'Leisteen'
         }
     },
+    'sv': {
+        'label': 'Etikett',
+        'remove_label': 'Ta bort etikett',
+        'tip_assign': 'Tilldela färgetiketter till filer',
+        'tip_remove': 'Ta bort färgetikett från filer',
+        'colors': {
+            'blueberry': 'Blåbär',
+            'mint': 'Mint',
+            'lime': 'Lime',
+            'banana': 'Banan',
+            'orange': 'Orange',
+            'strawberry': 'Jordgubbe',
+            'bubblegum': 'Tuggummi',
+            'grape': 'Druva',
+            'cocoa': 'Kakao',
+            'slate': 'Skiffer'
+        }
+    },
     'pl': {
         'label': 'Etykieta',
         'remove_label': 'Usuń etykietę',
@@ -92,9 +110,11 @@ TRANSLATIONS = {
         'colors': {
             'blueberry': 'Jagoda',
             'mint': 'Mięta',
+            'lime': 'Limonka',
             'banana': 'Banan',
             'orange': 'Pomarańczowy',
             'strawberry': 'Truskawka',
+            'bubblegum': 'Guma do żucia',
             'grape': 'Winogrono',
             'cocoa': 'Kakao',
             'slate': 'Łupek'
@@ -136,6 +156,42 @@ TRANSLATIONS = {
             'slate': 'Pizarra'
         }
     },
+    'pt': {
+        'label': 'Etiqueta',
+        'remove_label': 'Remover etiqueta',
+        'tip_assign': 'Atribuir etiquetas coloridas aos arquivos',
+        'tip_remove': 'Remover etiqueta colorida dos arquivos',
+        'colors': {
+            'blueberry': 'Mirtilo',
+            'mint': 'Hortelã',
+            'lime': 'Lima',
+            'banana': 'Banana',
+            'orange': 'Laranja',
+            'strawberry': 'Morango',
+            'bubblegum': 'Chiclete',
+            'grape': 'Uva',
+            'cocoa': 'Cacau',
+            'slate': 'Ardósia'
+        }
+    },
+    'tr': {
+        'label': 'Etiket',
+        'remove_label': 'Etiketi kaldır',
+        'tip_assign': 'Dosyalara renkli etiketler atayın',
+        'tip_remove': 'Dosyalardan renkli etiketi kaldırın',
+        'colors': {
+            'blueberry': 'Yaban mersini',
+            'mint': 'Nane',
+            'lime': 'Misket limonu',
+            'banana': 'Muz',
+            'orange': 'Portakal',
+            'strawberry': 'Çilek',
+            'bubblegum': 'Sakız',
+            'grape': 'Üzüm',
+            'cocoa': 'Kakao',
+            'slate': 'Arduvaz'
+        }
+    },
     'ja': {
         'label': 'ラベル',
         'remove_label': 'ラベルを削除',
@@ -162,9 +218,11 @@ TRANSLATIONS = {
         'colors': {
             'blueberry': '블루베리',
             'mint': '민트',
-            'banana': '바나나', 
+            'lime': '라임',
+            'banana': '바나나',
             'orange': '오렌지',
             'strawberry': '딸기',
+            'bubblegum': '버블껌',
             'grape': '포도',
             'cocoa': '코코아',
             'slate': '슬레이트'
@@ -223,6 +281,42 @@ TRANSLATIONS = {
             'cocoa': 'Какао',
             'slate': 'Сланец'
         }
+    },
+    'ar': {
+        'label': 'تسمية',
+        'remove_label': 'إزالة التسمية',
+        'tip_assign': 'تعيين تسميات ملونة للملفات',
+        'tip_remove': 'إزالة التسمية الملونة من الملفات',
+        'colors': {
+            'blueberry': 'توت أزرق',
+            'mint': 'نعناع',
+            'lime': 'ليمون أخضر',
+            'banana': 'موز',
+            'orange': 'برتقالي',
+            'strawberry': 'فراولة',
+            'bubblegum': 'علكة',
+            'grape': 'عنب',
+            'cocoa': 'كاكاو',
+            'slate': 'إردواز'
+        }
+    },
+    'hi': {
+        'label': 'लेबल',
+        'remove_label': 'लेबल हटाएं',
+        'tip_assign': 'फाइलों पर रंगीन लेबल लगाएं',
+        'tip_remove': 'फाइलों से रंगीन लेबल हटाएं',
+        'colors': {
+            'blueberry': 'ब्लूबेरी',
+            'mint': 'पुदीना',
+            'lime': 'नींबू',
+            'banana': 'केला',
+            'orange': 'संतरा',
+            'strawberry': 'स्ट्रॉबेरी',
+            'bubblegum': 'च्यूइंगम',
+            'grape': 'अंगूर',
+            'cocoa': 'कोकोआ',
+            'slate': 'स्लेट'
+        }
     }
 }
 
@@ -261,6 +355,20 @@ def get_system_language():
                 return 'zh-cn'  # Par défaut chinois simplifié
             elif lang_lower.startswith('ru'):
                 return 'ru'
+            elif lang_lower.startswith('ko'):
+                return 'ko'
+            elif lang_lower.startswith('pl'):
+                return 'pl'
+            elif lang_lower.startswith('pt'):
+                return 'pt'
+            elif lang_lower.startswith('ar'):
+                return 'ar'
+            elif lang_lower.startswith('tr'):
+                return 'tr'
+            elif lang_lower.startswith('sv'):
+                return 'sv'
+            elif lang_lower.startswith('hi'):
+                return 'hi'
     except Exception as e:
         print(f"Error detecting language: {e}")
 
@@ -323,34 +431,34 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
         super().__init__()
         self.current_language = get_system_language()
         self.translations = TRANSLATIONS.get(self.current_language, TRANSLATIONS['en'])
-        
+
         # Vérifier et créer les emblèmes si nécessaire
         self.ensure_emblems_exist()
 
     def ensure_emblems_exist(self):
         """Vérifie et crée les emblèmes SVG s'ils n'existent pas"""
         emblem_dir = Path.home() / '.local' / 'share' / 'icons' / 'hicolor' / '16x16' / 'emblems'
-        
+
         try:
             # Créer le répertoire s'il n'existe pas
             emblem_dir.mkdir(parents=True, exist_ok=True)
-            
+
             # Vérifier si tous les emblèmes existent
             missing_emblems = []
             for color_id, color_info in self.COLORS.items():
                 emblem_file = emblem_dir / f"{color_info['emblem']}.svg"
                 if not emblem_file.exists():
                     missing_emblems.append((color_id, color_info))
-            
+
             # Créer les emblèmes manquants
             if missing_emblems:
                 print(f"Creating {len(missing_emblems)} missing color emblems...")
                 for color_id, color_info in missing_emblems:
                     self.create_emblem_svg(color_info['emblem'], color_info['hex'], emblem_dir)
-                
+
                 # Mettre à jour le cache d'icônes
                 self.update_icon_cache()
-                
+
         except Exception as e:
             print(f"Error ensuring emblems exist: {e}")
 
@@ -378,7 +486,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
        ry="2.1166666" />
   </g>
 </svg>'''
-        
+
         try:
             svg_file = emblem_dir / f"{emblem_name}.svg"
             svg_file.write_text(svg_content)
@@ -390,7 +498,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
         """Met à jour le cache d'icônes"""
         try:
             hicolor_dir = Path.home() / '.local' / 'share' / 'icons' / 'hicolor'
-            subprocess.run(['gtk-update-icon-cache', str(hicolor_dir)], 
+            subprocess.run(['gtk-update-icon-cache', str(hicolor_dir)],
                          check=False, capture_output=True)
             print("✓ Icon cache updated")
         except Exception as e:
@@ -442,7 +550,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
 
         remove_item = Nautilus.MenuItem(
             name='ColorLabels::remove',
-            label=f'{self.translations["remove_label"]}',
+            label=self.translations["remove_label"],
             tip=self.translations['tip_remove']
         )
         remove_item.connect('activate', self.remove_color_label, files)
