@@ -40,13 +40,20 @@ Enjoy!
 
 <img width="2048" height="1152" alt="Capture d’écran du 2025-08-20 13-50-19" src="https://github.com/user-attachments/assets/da7c9824-9830-4b90-9dc2-c8d6be8d3e21" />
 
-   
+### 
 <img width="2048" height="1152" alt="Capture d’écran du 2025-08-20 15-20-09" src="https://github.com/user-attachments/assets/f676b427-3a79-4bde-8398-ec55201d1796" />
+
+
+### Files color labels and menu enhancements
+<img width="2048" height="1152" alt="Capture d’écran du 2025-08-31 22-08-54" src="https://github.com/user-attachments/assets/3a02af0f-f650-4562-b8f0-0044eaa3ce2e" />
+
+### 
+<img width="2048" height="1152" alt="Capture d’écran du 2025-08-31 17-52-58" src="https://github.com/user-attachments/assets/41d14305-cdcf-47da-aebf-a9a49e701eaa" />
 
 
 ### Pantheon Files can be used as well instead of Nautilus
 <img width="2048" height="1152" alt="Capture d’écran du 2025-08-23 17-53-58" src="https://github.com/user-attachments/assets/269e0839-972f-4757-84f1-5887685e421d" />
 
-
+### 
 <img width="2048" height="1152" alt="Capture d’écran du 2025-08-23 17-53-30" src="https://github.com/user-attachments/assets/8a0a9d87-b679-4340-8c06-edb4bbf95059" />
 
