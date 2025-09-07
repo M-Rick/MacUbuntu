@@ -357,6 +357,24 @@ def get_localized_text():
                 'slate': '슬레이트'
             }
         },
+        'hi': {  # Hindi
+            'label': 'लेबल',
+            'remove_label': 'लेबल हटाएं',
+            'tip_assign': 'फाइलों को रंगीन लेबल असाइन करें',
+            'tip_remove': 'फाइलों से रंगीन लेबल हटाएं',
+            'colors': {
+                'blueberry': 'ब्लूबेरी',
+                'mint': 'पुदीना',
+                'lime': 'नींबू',
+                'banana': 'केला',
+                'orange': 'संतरा',
+                'strawberry': 'स्ट्रॉबेरी',
+                'bubblegum': 'बबल गम',
+                'grape': 'अंगूर',
+                'cocoa': 'कोको',
+                'slate': 'स्लेट'
+            }
+        },
         'ar': {  # Arabic
             'label': 'تسمية',
             'remove_label': 'إزالة التسمية',
