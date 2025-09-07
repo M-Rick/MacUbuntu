@@ -14,13 +14,14 @@ mkdir -p ~/.config/autostart
 mkdir -p ~/.config/dconf/MacUbuntu
 mkdir -p ~/.local/share/applications
 mkdir -p ~/.local/share/gnome-shell/extensions
+mkdir -p ~/.local/share/nautilus-python/extensions/
 mkdir -p ~/.local/share/icons/Yaru/actions/symbolic
 
 ## Backup settings
 dconf dump / > ~/.config/dconf/MacUbuntu/dconf.bak
 
 # Install XFCE4 Panel
-sudo apt install -y --ignore-missing xfce4-panel xfce4-sntray-plugin xfce4-whiskermenu-plugin xfce4-appmenu-plugin appmenu-gtk2-module appmenu-gtk3-module appmenu-gtk-module-common appmenu-registrar appmenu-qt5 libdbusmenu-glib4 libdbusmenu-gtk3-4 libdbusmenu-gtk4 neofetch
+sudo apt install -y --ignore-missing xfce4-panel xfce4-sntray-plugin xfce4-whiskermenu-plugin xfce4-appmenu-plugin appmenu-gtk2-module appmenu-gtk3-module appmenu-gtk-module-common appmenu-registrar appmenu-qt5 libdbusmenu-glib4 libdbusmenu-gtk3-4 libdbusmenu-gtk4 python3-nautilus neofetch
 
 
 # Create autostart file
@@ -948,6 +949,20 @@ EOF
 
 dconf load / < ~/.config/dconf/MacUbuntu/nautilus-list-view.dconf
 
+# Nautilus Extensions
+
+# Duplicate
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Nautilus/Duplicate-Nautilus.py -P ~/.local/share/nautilus-python/extensions/
+
+# Link
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Nautilus/Link-Nautilus.py -P ~/.local/share/nautilus-python/extensions/
+
+# Lock
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Nautilus/Lock-Nautilus.py -P ~/.local/share/nautilus-python/extensions/
+
+# Labels
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Nautilus/Labels-Nautilus.py -P ~/.local/share/nautilus-python/extensions/
+
 
 ## Gnome Shell extensions
 
@@ -1046,7 +1061,7 @@ dconf load /org/gnome/shell/extensions/trayIconsReloaded/ < ~/.config/dconf/MacU
 # Install Short Panel extension
 echo "Installing Short Panel extension..."
 if [ ! -f ~/.local/share/gnome-shell/extensions/short-panel@yourdomain.com/metadata.json ]; then
-    wget https://github.com/M-Rick/short-panel/releases/download/v1.0.0/short-panel@yourdomain.com.zip -P ~/.config/dconf/MacUbuntu --no-check-certificate || {
+    wget https://github.com/M-Rick/short-panel/releases/download/v1.0.0/short-panel@yourdomain.com.zip -P ~/.config/dconf/MacUbuntu || {
         echo "Warning: Could not download Short Panel extension"
     }
     unzip -q ~/.config/dconf/MacUbuntu/short-panel@yourdomain.com.zip -d ~/.config/dconf/MacUbuntu/
@@ -1056,7 +1071,7 @@ fi
 # Install Pop!_OS Window Tiling
 echo "Installing Pop Shell extension..."
 if [ ! -f ~/.local/share/gnome-shell/extensions/pop-shell@system76.com/metadata.json ]; then
-    wget https://github.com/M-Rick/pop-shell/releases/download/v1.2.1/pop-shell@system76.com.zip -P ~/.config/dconf/MacUbuntu --no-check-certificate || {
+    wget https://github.com/M-Rick/pop-shell/releases/download/v1.2.1/pop-shell@system76.com.zip -P ~/.config/dconf/MacUbuntu || {
         echo "Warning: Could not download Pop Shell extension"
     }
     unzip -q ~/.config/dconf/MacUbuntu/pop-shell@system76.com.zip -d ~/.config/dconf/MacUbuntu/
@@ -1069,7 +1084,7 @@ echo "Installing Legacy (GTK3) Theme Scheme Auto Switcher extension..."
 if [ -f ~/.local/share/gnome-shell/extensions/legacyschemeautoswitcher@joshimukul29.gmail.com/metadata.json ]; then
     rm -dR ~/.local/share/gnome-shell/extensions/legacyschemeautoswitcher@joshimukul29.gmail.com
 fi
-wget https://github.com/M-Rick/MacUbuntu/raw/main/Extensions/legacyschemeautoswitcher%40joshimukul29.gmail.com.zip -P ~/.config/dconf/MacUbuntu --no-check-certificate || {
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Extensions/legacyschemeautoswitcher%40joshimukul29.gmail.com.zip -P ~/.config/dconf/MacUbuntu || {
 echo "Warning: Could not download Legacy (GTK3) Theme Scheme Auto Switcher extension"
 }
 unzip -q ~/.config/dconf/MacUbuntu/legacyschemeautoswitcher@joshimukul29.gmail.com.zip -d ~/.config/dconf/MacUbuntu/
