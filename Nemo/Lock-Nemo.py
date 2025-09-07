@@ -52,6 +52,12 @@ def get_localized_text():
             'lock_tip': 'Beskytt fil mot skriving',
             'unlock_tip': 'Tillat filendring'
         },
+        'fi': {  # Finnish
+            'lock': 'Lukitse',
+            'unlock': 'Avaa lukitus',
+            'lock_tip': 'Suojaa tiedosto kirjoittamiselta',
+            'unlock_tip': 'Salli tiedoston muokkaus'
+        },
         'fr': {  # French
             'lock': 'Verrouiller',
             'unlock': 'Déverrouiller',
@@ -88,6 +94,12 @@ def get_localized_text():
             'lock_tip': 'Chroń plik przed zapisem',
             'unlock_tip': 'Pozwól na modyfikację pliku'
         },
+        'hu': {  # Hungarian
+            'lock': 'Zárolás',
+            'unlock': 'Zárolás feloldása',
+            'lock_tip': 'Fájl védelme írás ellen',
+            'unlock_tip': 'Fájl módosításának engedélyezése'
+        },
         'ru': {  # Russian
             'lock': 'Заблокировать',
             'unlock': 'Разблокировать',
@@ -99,18 +111,6 @@ def get_localized_text():
             'unlock': 'अनलॉक',
             'lock_tip': 'फाइल को लिखने से सुरक्षित करें',
             'unlock_tip': 'फाइल संशोधन की अनुमति दें'
-        },
-        'fi': {  # Finnish
-            'lock': 'Lukitse',
-            'unlock': 'Avaa lukitus',
-            'lock_tip': 'Suojaa tiedosto kirjoittamiselta',
-            'unlock_tip': 'Salli tiedoston muokkaus'
-        },
-        'hu': {  # Hungarian
-            'lock': 'Zárolás',
-            'unlock': 'Zárolás feloldása',
-            'lock_tip': 'Fájl védelme írás ellen',
-            'unlock_tip': 'Fájl módosításának engedélyezése'
         },
         'zh_CN': {  # Simplified Chinese
             'lock': '锁定',
