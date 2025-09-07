@@ -15,6 +15,7 @@ mkdir -p ~/.config/dconf/MacUbuntu
 mkdir -p ~/.local/share/applications
 mkdir -p ~/.local/share/gnome-shell/extensions
 mkdir -p ~/.local/share/nautilus-python/extensions/
+mkdir -p ~/.local/share/nemo-python/extensions/
 mkdir -p ~/.local/share/icons/Yaru/actions/symbolic
 
 ## Backup settings
@@ -962,6 +963,19 @@ wget https://github.com/M-Rick/MacUbuntu/raw/main/Nautilus/Lock-Nautilus.py -P ~
 
 # Labels
 wget https://github.com/M-Rick/MacUbuntu/raw/main/Nautilus/Labels-Nautilus.py -P ~/.local/share/nautilus-python/extensions/
+
+
+# Nemo Extensions
+
+# Duplicate
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Nemo/Duplicate-Nemo.py -P ~/.local/share/nemo-python/extensions/
+
+# Lock
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Nemo/Lock-Nemo.py -P ~/.local/share/nemo-python/extensions/
+
+# Labels
+wget https://github.com/M-Rick/MacUbuntu/raw/main/Nemo/Labels-Nemo.py -P ~/.local/share/nemo-python/extensions/
+
 
 
 ## Gnome Shell extensions
