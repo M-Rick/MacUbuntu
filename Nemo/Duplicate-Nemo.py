@@ -66,6 +66,11 @@ def get_localized_text():
             'tip': 'Duplicar arquivos selecionados',
             'copy_suffix': ' - cópia'
         },
+        'ro': {  # Romanian
+            'label': 'Duplicare',
+            'tip': 'Duplică fișierele selectate', 
+            'copy_suffix': ' - copie'
+        },
         'pl': {  # Polish
             'label': 'Duplikuj',
             'tip': 'Duplikuj wybrane pliki',
