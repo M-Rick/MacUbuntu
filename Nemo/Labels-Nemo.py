@@ -119,6 +119,24 @@ TRANSLATIONS = {
             'slate': 'Skifer'
         }
     },
+    'fi': {  # Finnish
+        'label': 'Tunniste',
+        'remove_label': 'Poista tunniste',
+        'tip_assign': 'Määritä värillisiä tunnisteita tiedostoille',
+        'tip_remove': 'Poista värillinen tunniste tiedostoista',
+        'colors': {
+            'blueberry': 'Mustikka',
+            'mint': 'Minttu',
+            'lime': 'Limetti',
+            'banana': 'Banaani',
+            'orange': 'Appelsiini',
+            'strawberry': 'Mansikka',
+            'bubblegum': 'Purukumi',
+            'grape': 'Rypäle',
+            'cocoa': 'Kaakao',
+            'slate': 'Liuske'
+        }
+    },
     'fr': {  # French
         'label': 'Étiquette',
         'remove_label': 'Supprimer l\'étiquette',
@@ -227,6 +245,24 @@ TRANSLATIONS = {
             'slate': 'Łupek'
         }
     },
+    'hu': {  # Hungarian
+        'label': 'Címke',
+        'remove_label': 'Címke eltávolítása',
+        'tip_assign': 'Színes címkék hozzárendelése fájlokhoz',
+        'tip_remove': 'Színes címke eltávolítása fájlokról',
+        'colors': {
+            'blueberry': 'Áfonya',
+            'mint': 'Menta',
+            'lime': 'Lime',
+            'banana': 'Banán',
+            'orange': 'Narancs',
+            'strawberry': 'Eper',
+            'bubblegum': 'Rágógumi',
+            'grape': 'Szőlő',
+            'cocoa': 'Kakaó',
+            'slate': 'Pala'
+        }
+    },
     'ru': {  # Russian
         'label': 'Метка',
         'remove_label': 'Удалить метку',
@@ -261,42 +297,6 @@ TRANSLATIONS = {
             'grape': 'अंगूर',
             'cocoa': 'कोको',
             'slate': 'स्लेट'
-        }
-    },
-    'fi': {  # Finnish
-        'label': 'Tunniste',
-        'remove_label': 'Poista tunniste',
-        'tip_assign': 'Määritä värillisiä tunnisteita tiedostoille',
-        'tip_remove': 'Poista värillinen tunniste tiedostoista',
-        'colors': {
-            'blueberry': 'Mustikka',
-            'mint': 'Minttu',
-            'lime': 'Limetti',
-            'banana': 'Banaani',
-            'orange': 'Appelsiini',
-            'strawberry': 'Mansikka',
-            'bubblegum': 'Purukumi',
-            'grape': 'Rypäle',
-            'cocoa': 'Kaakao',
-            'slate': 'Liuske'
-        }
-    },
-    'hu': {  # Hungarian
-        'label': 'Címke',
-        'remove_label': 'Címke eltávolítása',
-        'tip_assign': 'Színes címkék hozzárendelése fájlokhoz',
-        'tip_remove': 'Színes címke eltávolítása fájlokról',
-        'colors': {
-            'blueberry': 'Áfonya',
-            'mint': 'Menta',
-            'lime': 'Lime',
-            'banana': 'Banán',
-            'orange': 'Narancs',
-            'strawberry': 'Eper',
-            'bubblegum': 'Rágógumi',
-            'grape': 'Szőlő',
-            'cocoa': 'Kakaó',
-            'slate': 'Pala'
         }
     },
     'zh_CN': {  # Simplified Chinese
