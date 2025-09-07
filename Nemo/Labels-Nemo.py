@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-Extension Nemo pour les labels de couleur (comme macOS)
-Compatible avec l'extension Nautilus correspondante
-À placer dans : ~/.local/share/nemo-python/extensions/color_labels.py
+Nemo extension for color labels (like macOS)
+Compatible with corresponding Nautilus extension
+Place in: ~/.local/share/nemo-python/extensions/color_labels.py
 """
 import os
 import locale
 from gi.repository import Nemo, GObject, Gio
 from urllib.parse import unquote
 
-# Dictionnaire des traductions
+# Translation dictionary by linguistic family
 TRANSLATIONS = {
-    'en': {
+    'en': {  # English (default)
         'label': 'Label',
         'remove_label': 'Remove Label',
         'tip_assign': 'Assign color labels to files',
@@ -29,25 +29,7 @@ TRANSLATIONS = {
             'slate': 'Slate'
         }
     },
-    'fr': {
-        'label': 'Étiquette',
-        'remove_label': 'Supprimer l\'étiquette',
-        'tip_assign': 'Assigner des étiquettes de couleur aux fichiers',
-        'tip_remove': 'Supprimer l\'étiquette de couleur des fichiers',
-        'colors': {
-            'blueberry': 'Myrtille',
-            'mint': 'Menthe',
-            'lime': 'Citron vert',
-            'banana': 'Banane',
-            'orange': 'Orange',
-            'strawberry': 'Fraise',
-            'bubblegum': 'Chewing-gum',
-            'grape': 'Raisin',
-            'cocoa': 'Cacao',
-            'slate': 'Ardoise'
-        }
-    },
-    'de': {
+    'de': {  # German
         'label': 'Etikett',
         'remove_label': 'Etikett entfernen',
         'tip_assign': 'Farbetiketten zu Dateien hinzufügen',
@@ -65,7 +47,7 @@ TRANSLATIONS = {
             'slate': 'Schiefer'
         }
     },
-    'nl': {
+    'nl': {  # Dutch
         'label': 'Label',
         'remove_label': 'Label verwijderen',
         'tip_assign': 'Kleurlabels toewijzen aan bestanden',
@@ -83,7 +65,79 @@ TRANSLATIONS = {
             'slate': 'Leisteen'
         }
     },
-    'it': {
+    'sv': {  # Swedish
+        'label': 'Etikett',
+        'remove_label': 'Ta bort etikett',
+        'tip_assign': 'Tilldela färgetiketter till filer',
+        'tip_remove': 'Ta bort färgetikett från filer',
+        'colors': {
+            'blueberry': 'Blåbär',
+            'mint': 'Mynta',
+            'lime': 'Lime',
+            'banana': 'Banan',
+            'orange': 'Apelsin',
+            'strawberry': 'Jordgubbe',
+            'bubblegum': 'Tuggummi',
+            'grape': 'Druva',
+            'cocoa': 'Kakao',
+            'slate': 'Skiffer'
+        }
+    },
+    'da': {  # Danish
+        'label': 'Etiket',
+        'remove_label': 'Fjern etiket',
+        'tip_assign': 'Tildel farveetiketter til filer',
+        'tip_remove': 'Fjern farveetiket fra filer',
+        'colors': {
+            'blueberry': 'Blåbær',
+            'mint': 'Mynte',
+            'lime': 'Lime',
+            'banana': 'Banan',
+            'orange': 'Orange',
+            'strawberry': 'Jordbær',
+            'bubblegum': 'Tyggegummi',
+            'grape': 'Drue',
+            'cocoa': 'Kakao',
+            'slate': 'Skifer'
+        }
+    },
+    'no': {  # Norwegian
+        'label': 'Etikett',
+        'remove_label': 'Fjern etikett',
+        'tip_assign': 'Tildel fargetiketter til filer',
+        'tip_remove': 'Fjern fargetikett fra filer',
+        'colors': {
+            'blueberry': 'Blåbær',
+            'mint': 'Mynte',
+            'lime': 'Lime',
+            'banana': 'Banan',
+            'orange': 'Appelsin',
+            'strawberry': 'Jordbær',
+            'bubblegum': 'Tyggegummi',
+            'grape': 'Drue',
+            'cocoa': 'Kakao',
+            'slate': 'Skifer'
+        }
+    },
+    'fr': {  # French
+        'label': 'Étiquette',
+        'remove_label': 'Supprimer l\'étiquette',
+        'tip_assign': 'Assigner des étiquettes de couleur aux fichiers',
+        'tip_remove': 'Supprimer l\'étiquette de couleur des fichiers',
+        'colors': {
+            'blueberry': 'Myrtille',
+            'mint': 'Menthe',
+            'lime': 'Citron vert',
+            'banana': 'Banane',
+            'orange': 'Orange',
+            'strawberry': 'Fraise',
+            'bubblegum': 'Chewing-gum',
+            'grape': 'Raisin',
+            'cocoa': 'Cacao',
+            'slate': 'Ardoise'
+        }
+    },
+    'it': {  # Italian
         'label': 'Etichetta',
         'remove_label': 'Rimuovi etichetta',
         'tip_assign': 'Assegna etichette colorate ai file',
@@ -101,7 +155,7 @@ TRANSLATIONS = {
             'slate': 'Ardesia'
         }
     },
-    'es': {
+    'es': {  # Spanish
         'label': 'Etiqueta',
         'remove_label': 'Eliminar etiqueta',
         'tip_assign': 'Asignar etiquetas de color a archivos',
@@ -119,25 +173,133 @@ TRANSLATIONS = {
             'slate': 'Pizarra'
         }
     },
-    'ja': {
-        'label': 'ラベル',
-        'remove_label': 'ラベルを削除',
-        'tip_assign': 'ファイルにカラーラベルを設定',
-        'tip_remove': 'ファイルからカラーラベルを削除',
+    'pt': {  # Portuguese
+        'label': 'Etiqueta',
+        'remove_label': 'Remover etiqueta',
+        'tip_assign': 'Atribuir etiquetas coloridas a arquivos',
+        'tip_remove': 'Remover etiqueta colorida de arquivos',
         'colors': {
-            'blueberry': 'ブルーベリー',
-            'mint': 'ミント',
-            'lime': 'ライム',
-            'banana': 'バナナ',
-            'orange': 'オレンジ',
-            'strawberry': 'イチゴ',
-            'bubblegum': 'バブルガム',
-            'grape': 'ブドウ',
-            'cocoa': 'ココア',
-            'slate': 'スレート'
+            'blueberry': 'Mirtilo',
+            'mint': 'Hortelã',
+            'lime': 'Lima',
+            'banana': 'Banana',
+            'orange': 'Laranja',
+            'strawberry': 'Morango',
+            'bubblegum': 'Chiclete',
+            'grape': 'Uva',
+            'cocoa': 'Cacau',
+            'slate': 'Ardósia'
         }
     },
-    'zh-cn': {
+    'ro': {  # Romanian
+        'label': 'Etichetă',
+        'remove_label': 'Șterge eticheta',
+        'tip_assign': 'Atribuie etichete colorate fișierelor',
+        'tip_remove': 'Șterge eticheta colorată de pe fișiere',
+        'colors': {
+            'blueberry': 'Afină',
+            'mint': 'Mentă',
+            'lime': 'Lămâie verde',
+            'banana': 'Banană',
+            'orange': 'Portocală',
+            'strawberry': 'Căpșună',
+            'bubblegum': 'Gumă de mestecat',
+            'grape': 'Strugure',
+            'cocoa': 'Cacao',
+            'slate': 'Ardezie'
+        }
+    },
+    'pl': {  # Polish
+        'label': 'Etykieta',
+        'remove_label': 'Usuń etykietę',
+        'tip_assign': 'Przypisz kolorowe etykiety do plików',
+        'tip_remove': 'Usuń kolorową etykietę z plików',
+        'colors': {
+            'blueberry': 'Jagoda',
+            'mint': 'Mięta',
+            'lime': 'Limonka',
+            'banana': 'Banan',
+            'orange': 'Pomarańcza',
+            'strawberry': 'Truskawka',
+            'bubblegum': 'Guma do żucia',
+            'grape': 'Winogrono',
+            'cocoa': 'Kakao',
+            'slate': 'Łupek'
+        }
+    },
+    'ru': {  # Russian
+        'label': 'Метка',
+        'remove_label': 'Удалить метку',
+        'tip_assign': 'Назначить цветные метки файлам',
+        'tip_remove': 'Удалить цветную метку с файлов',
+        'colors': {
+            'blueberry': 'Черника',
+            'mint': 'Мята',
+            'lime': 'Лайм',
+            'banana': 'Банан',
+            'orange': 'Апельсин',
+            'strawberry': 'Клубника',
+            'bubblegum': 'Жвачка',
+            'grape': 'Виноград',
+            'cocoa': 'Какао',
+            'slate': 'Сланец'
+        }
+    },
+    'hi': {  # Hindi
+        'label': 'लेबल',
+        'remove_label': 'लेबल हटाएं',
+        'tip_assign': 'फाइलों को रंगीन लेबल असाइन करें',
+        'tip_remove': 'फाइलों से रंगीन लेबल हटाएं',
+        'colors': {
+            'blueberry': 'ब्लूबेरी',
+            'mint': 'पुदीना',
+            'lime': 'नींबू',
+            'banana': 'केला',
+            'orange': 'संतरा',
+            'strawberry': 'स्ट्रॉबेरी',
+            'bubblegum': 'बबल गम',
+            'grape': 'अंगूर',
+            'cocoa': 'कोको',
+            'slate': 'स्लेट'
+        }
+    },
+    'fi': {  # Finnish
+        'label': 'Tunniste',
+        'remove_label': 'Poista tunniste',
+        'tip_assign': 'Määritä värillisiä tunnisteita tiedostoille',
+        'tip_remove': 'Poista värillinen tunniste tiedostoista',
+        'colors': {
+            'blueberry': 'Mustikka',
+            'mint': 'Minttu',
+            'lime': 'Limetti',
+            'banana': 'Banaani',
+            'orange': 'Appelsiini',
+            'strawberry': 'Mansikka',
+            'bubblegum': 'Purukumi',
+            'grape': 'Rypäle',
+            'cocoa': 'Kaakao',
+            'slate': 'Liuske'
+        }
+    },
+    'hu': {  # Hungarian
+        'label': 'Címke',
+        'remove_label': 'Címke eltávolítása',
+        'tip_assign': 'Színes címkék hozzárendelése fájlokhoz',
+        'tip_remove': 'Színes címke eltávolítása fájlokról',
+        'colors': {
+            'blueberry': 'Áfonya',
+            'mint': 'Menta',
+            'lime': 'Lime',
+            'banana': 'Banán',
+            'orange': 'Narancs',
+            'strawberry': 'Eper',
+            'bubblegum': 'Rágógumi',
+            'grape': 'Szőlő',
+            'cocoa': 'Kakaó',
+            'slate': 'Pala'
+        }
+    },
+    'zh_CN': {  # Simplified Chinese
         'label': '标签',
         'remove_label': '移除标签',
         'tip_assign': '为文件分配颜色标签',
@@ -155,7 +317,7 @@ TRANSLATIONS = {
             'slate': '石板'
         }
     },
-    'zh-tw': {
+    'zh_TW': {  # Traditional Chinese
         'label': '標籤',
         'remove_label': '移除標籤',
         'tip_assign': '為檔案分配顏色標籤',
@@ -173,65 +335,143 @@ TRANSLATIONS = {
             'slate': '石板'
         }
     },
-    'ru': {
-        'label': 'Метка',
-        'remove_label': 'Удалить метку',
-        'tip_assign': 'Назначить цветные метки файлам',
-        'tip_remove': 'Удалить цветную метку с файлов',
+    'ja': {  # Japanese
+        'label': 'ラベル',
+        'remove_label': 'ラベルを削除',
+        'tip_assign': 'ファイルにカラーラベルを設定',
+        'tip_remove': 'ファイルからカラーラベルを削除',
         'colors': {
-            'blueberry': 'Черника',
-            'mint': 'Мята',
-            'lime': 'Лайм',
-            'banana': 'Банан',
-            'orange': 'Апельсин',
-            'strawberry': 'Клубника',
-            'bubblegum': 'Жвачка',
-            'grape': 'Виноград',
-            'cocoa': 'Какао',
-            'slate': 'Сланец'
+            'blueberry': 'ブルーベリー',
+            'mint': 'ミント',
+            'lime': 'ライム',
+            'banana': 'バナナ',
+            'orange': 'オレンジ',
+            'strawberry': 'イチゴ',
+            'bubblegum': 'バブルガム',
+            'grape': 'ブドウ',
+            'cocoa': 'ココア',
+            'slate': 'スレート'
+        }
+    },
+    'ko': {  # Korean
+        'label': '라벨',
+        'remove_label': '라벨 제거',
+        'tip_assign': '파일에 컬러 라벨 할당',
+        'tip_remove': '파일에서 컬러 라벨 제거',
+        'colors': {
+            'blueberry': '블루베리',
+            'mint': '민트',
+            'lime': '라임',
+            'banana': '바나나',
+            'orange': '오렌지',
+            'strawberry': '딸기',
+            'bubblegum': '버블껌',
+            'grape': '포도',
+            'cocoa': '코코아',
+            'slate': '슬레이트'
+        }
+    },
+    'ar': {  # Arabic
+        'label': 'تسمية',
+        'remove_label': 'إزالة التسمية',
+        'tip_assign': 'تعيين تسميات ملونة للملفات',
+        'tip_remove': 'إزالة التسمية الملونة من الملفات',
+        'colors': {
+            'blueberry': 'توت أزرق',
+            'mint': 'نعناع',
+            'lime': 'ليمون أخضر',
+            'banana': 'موز',
+            'orange': 'برتقال',
+            'strawberry': 'فراولة',
+            'bubblegum': 'علكة',
+            'grape': 'عنب',
+            'cocoa': 'كاكاو',
+            'slate': 'أردواز'
+        }
+    },
+    'he': {  # Hebrew
+        'label': 'תווית',
+        'remove_label': 'הסר תווית',
+        'tip_assign': 'הקצה תוויות צבעוניות לקבצים',
+        'tip_remove': 'הסר תווית צבעונית מקבצים',
+        'colors': {
+            'blueberry': 'אוכמנית',
+            'mint': 'נענע',
+            'lime': 'ליים',
+            'banana': 'בננה',
+            'orange': 'כתום',
+            'strawberry': 'תות שדה',
+            'bubblegum': 'מסטיק',
+            'grape': 'ענב',
+            'cocoa': 'קקאו',
+            'slate': 'צפחה'
+        }
+    },
+    'tr': {  # Turkish
+        'label': 'Etiket',
+        'remove_label': 'Etiketi kaldır',
+        'tip_assign': 'Dosyalara renkli etiketler ata',
+        'tip_remove': 'Dosyalardan renkli etiketi kaldır',
+        'colors': {
+            'blueberry': 'Yaban mersini',
+            'mint': 'Nane',
+            'lime': 'Misket limonu',
+            'banana': 'Muz',
+            'orange': 'Portakal',
+            'strawberry': 'Çilek',
+            'bubblegum': 'Sakız',
+            'grape': 'Üzüm',
+            'cocoa': 'Kakao',
+            'slate': 'Arduvaz'
         }
     }
 }
 
 def get_system_language():
-    """Détecte la langue du système"""
+    """Detects system language using same logic as duplicate extension"""
     try:
-        # Essayer d'abord la variable d'environnement LANGUAGE
-        lang = os.environ.get('LANGUAGE', '').split(':')[0]
-        if not lang:
-            # Puis essayer LANG
-            lang = os.environ.get('LANG', '').split('.')[0]
-        if not lang:
-            # En dernier recours, utiliser locale
-            lang = locale.getlocale()[0]
+        # Get system language variables
+        lang_env = os.environ.get('LANG', '').lower()
+        lc_messages = os.environ.get('LC_MESSAGES', '').lower()
         
-        if lang:
-            # Normaliser le code de langue
-            lang_lower = lang.lower().replace('_', '-')
-            if lang_lower.startswith('fr'):
-                return 'fr'
-            elif lang_lower.startswith('de'):
-                return 'de'
-            elif lang_lower.startswith('nl'):
-                return 'nl'
-            elif lang_lower.startswith('it'):
-                return 'it'
-            elif lang_lower.startswith('es'):
-                return 'es'
-            elif lang_lower.startswith('ja'):
-                return 'ja'
-            elif lang_lower.startswith('zh-cn') or lang_lower == 'zh-hans':
-                return 'zh-cn'
-            elif lang_lower.startswith('zh-tw') or lang_lower == 'zh-hant':
-                return 'zh-tw'
-            elif lang_lower.startswith('zh'):
-                return 'zh-cn'  # Par défaut chinois simplifié
-            elif lang_lower.startswith('ru'):
-                return 'ru'
-    except Exception as e:
-        print(f"Error detecting language: {e}")
-    
-    return 'en'  # Par défaut anglais
+        try:
+            system_locale = locale.getdefaultlocale()[0]
+            if system_locale:
+                system_locale = system_locale.lower()
+        except:
+            system_locale = ''
+        
+        # Function to detect language
+        def detect_language():
+            # List of sources to check (by priority order)
+            sources = [lc_messages, lang_env, system_locale]
+            
+            for source in sources:
+                if not source:
+                    continue
+                    
+                # Check Chinese variants
+                if 'zh_cn' in source or 'zh-cn' in source:
+                    return 'zh_CN'
+                elif 'zh_tw' in source or 'zh-tw' in source or 'zh_hk' in source:
+                    return 'zh_TW'
+                    
+                # Check other languages
+                for lang_code in TRANSLATIONS.keys():
+                    if lang_code.startswith('zh'):  # Already handled above
+                        continue
+                    if source.startswith(lang_code + '_') or source.startswith(lang_code + '-'):
+                        return lang_code
+            
+            # Default language
+            return 'en'
+        
+        detected_lang = detect_language()
+        return detected_lang
+        
+    except Exception:
+        # In case of error, use English
+        return 'en'
 
 class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider):
 
@@ -292,7 +532,7 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
         self.translations = TRANSLATIONS.get(self.current_language, TRANSLATIONS['en'])
 
     def get_file_items(self, window, files):
-        """Crée le menu Label avec sous-menu de couleurs (signature Nemo)"""
+        """Creates Label menu with color submenu (Nemo signature)"""
         if not files:
             return []
 
@@ -315,29 +555,25 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
             color_item.connect('activate', self.apply_color_label, files, color_id)
             submenu.append_item(color_item)
 
-        # Ajouter une vraie ligne de séparation
+        # Add separator
         try:
-            # Essayer d'abord la méthode native pour les séparateurs
             submenu.append_separator()
         except AttributeError:
-            # Si append_separator n'existe pas, utiliser un MenuItem séparateur
             separator = Nemo.MenuItem(
                 name='ColorLabels::separator',
                 label=None,
                 sensitive=False
             )
             try:
-                # Essayer de définir comme séparateur
                 separator.set_property('separator', True)
             except:
-                # Derniers recours : utiliser une ligne Unicode fine
                 separator.set_property('label', '━━━━━━━━━━')
             
             submenu.append_item(separator)
 
         remove_item = Nemo.MenuItem(
             name='ColorLabels::remove',
-            label=f'❌ {self.translations["remove_label"]}',
+            label=f'{self.translations["remove_label"]}',
             tip=self.translations['tip_remove']
         )
         remove_item.connect('activate', self.remove_color_label, files)
@@ -346,11 +582,11 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
         return [main_item]
 
     def get_background_items(self, window, file):
-        """Menu contextuel sur le fond (optionnel pour Nemo)"""
+        """Context menu on background (optional for Nemo)"""
         return []
 
     def apply_color_label(self, menu, files, color_id):
-        """Applique un label de couleur aux fichiers sélectionnés"""
+        """Apply color label to selected files"""
         color_info = self.COLORS.get(color_id)
         if not color_info:
             return
@@ -360,16 +596,16 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
                 uri = file_info.get_uri()
                 file_path = unquote(uri.replace('file://', ''))
 
-                # 1. Supprimer l'emblème actuel
+                # 1. Remove current emblem
                 self.remove_emblem_metadata(file_path)
 
-                # 2. Ajouter le nouvel emblème directement via Nemo (affichage immédiat)
+                # 2. Add new emblem directly via Nemo (immediate display)
                 file_info.add_emblem(color_info['emblem'])
 
-                # 3. Stocker le nouvel emblème dans les métadonnées pour la persistance
+                # 3. Store new emblem in metadata for persistence
                 self.set_emblem_metadata(file_path, color_info['emblem'])
 
-                # 4. Rafraîchir immédiatement le fichier
+                # 4. Refresh file immediately
                 self.refresh_file(file_path)
 
             except Exception as e:
@@ -377,16 +613,16 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
                 continue
 
     def remove_color_label(self, menu, files):
-        """Supprime le label de couleur des fichiers sélectionnés"""
+        """Remove color label from selected files"""
         for file_info in files:
             try:
                 uri = file_info.get_uri()
                 file_path = unquote(uri.replace('file://', ''))
 
-                # 1. Supprimer l'emblème des métadonnées
+                # 1. Remove emblem from metadata
                 self.remove_emblem_metadata(file_path)
 
-                # 2. Rafraîchir le fichier
+                # 2. Refresh file
                 self.refresh_file(file_path)
 
             except Exception as e:
@@ -394,10 +630,10 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
                 continue
 
     def set_emblem_metadata(self, file_path, emblem):
-        """Stocke l'emblème dans les métadonnées du fichier (compatible Nautilus)"""
+        """Store emblem in file metadata (Nautilus compatible)"""
         try:
             file = Gio.File.new_for_path(file_path)
-            # Utilisation du même attribut que Nautilus pour la compatibilité
+            # Use same attribute as Nautilus for compatibility
             file.set_attribute_string(
                 'metadata::emblems',
                 emblem,
@@ -409,10 +645,10 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
             print(f"Failed to set emblem metadata: {e}")
 
     def remove_emblem_metadata(self, file_path):
-        """Supprime l'emblème des métadonnées du fichier"""
+        """Remove emblem from file metadata"""
         try:
             file = Gio.File.new_for_path(file_path)
-            # Supprimer l'attribut compatible Nautilus
+            # Remove Nautilus compatible attribute
             file.set_attribute_string(
                 'metadata::emblems',
                 '',
@@ -420,7 +656,7 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
                 None
             )
             
-            # Supprimer aussi l'attribut spécifique Nemo si il existe
+            # Also remove Nemo specific attribute if it exists
             try:
                 file.set_attribute_string(
                     'metadata::nemo-emblems',
@@ -429,33 +665,33 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
                     None
                 )
             except:
-                pass  # Pas grave si cet attribut n'existe pas
+                pass  # Not a problem if this attribute doesn't exist
                 
         except Exception as e:
             print(f"Failed to remove emblem metadata: {e}")
 
     def refresh_file(self, file_path):
-        """Force le rafraîchissement du fichier dans Nemo"""
+        """Force file refresh in Nemo"""
         try:
-            # Méthode compatible avec Nemo et Nautilus
+            # Method compatible with Nemo and Nautilus
             file = Gio.File.new_for_path(file_path)
             
-            # Créer un moniteur de fichier pour déclencher un rafraîchissement
+            # Create file monitor to trigger refresh
             monitor = file.monitor_file(Gio.FileMonitorFlags.NONE, None)
             if monitor:
                 monitor.emit('changed', file, None, Gio.FileMonitorEvent.ATTRIBUTE_CHANGED)
             
-            # Alternative : toucher le fichier pour forcer le rafraîchissement
+            # Alternative: touch file to force refresh
             try:
                 os.utime(file_path, None)
             except:
-                pass  # Pas grave si on ne peut pas modifier les timestamps
+                pass  # Not a problem if we can't modify timestamps
                 
         except Exception as e:
             print(f"Failed to refresh file: {e}")
 
     def update_file_info(self, file):
-        """Recharge les emblèmes depuis les métadonnées à chaque affichage"""
+        """Reload emblems from metadata on each display"""
         try:
             uri = file.get_uri()
             if not uri.startswith('file://'):
@@ -465,7 +701,7 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
             if not os.path.exists(file_path):
                 return
 
-            # Récupérer l'emblème depuis les métadonnées (compatible Nautilus)
+            # Get emblem from metadata (Nautilus compatible)
             file_gio = Gio.File.new_for_path(file_path)
             info = file_gio.query_info(
                 'metadata::emblems,metadata::nemo-emblems',
@@ -473,10 +709,10 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
                 None
             )
             
-            # Essayer d'abord l'attribut compatible Nautilus
+            # Try Nautilus compatible attribute first
             emblem = info.get_attribute_as_string('metadata::emblems')
             
-            # Si pas trouvé, essayer l'attribut spécifique Nemo
+            # If not found, try Nemo specific attribute
             if not emblem:
                 try:
                     emblem = info.get_attribute_as_string('metadata::nemo-emblems')
@@ -490,7 +726,7 @@ class ColorLabelsExtension(GObject.GObject, Nemo.MenuProvider, Nemo.InfoProvider
             print(f"Error updating file info: {e}")
 
 def main():
-    """Point d'entrée principal"""
+    """Main entry point"""
     pass
 
 if __name__ == "__main__":
