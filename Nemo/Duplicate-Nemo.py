@@ -46,6 +46,11 @@ def get_localized_text():
             'tip': 'Dupliser valgte filer',
             'copy_suffix': ' - kopi'
         },
+        'fi': {  # Finnish
+            'label': 'Monista',
+            'tip': 'Monista valitut tiedostot',
+            'copy_suffix': ' - kopio'
+        },
         'fr': {  # French
             'label': 'Dupliquer',
             'tip': 'Dupliquer les fichiers sélectionnés',
@@ -76,6 +81,11 @@ def get_localized_text():
             'tip': 'Duplikuj wybrane pliki',
             'copy_suffix': ' - kopia'
         },
+        'hu': {  # Hungarian
+            'label': 'Duplikálás',
+            'tip': 'Kiválasztott fájlok duplikálása',
+            'copy_suffix': ' - másolat'
+        },
         'ru': {  # Russian
             'label': 'Дублировать',
             'tip': 'Дублировать выбранные файлы',
@@ -85,16 +95,6 @@ def get_localized_text():
             'label': 'प्रतिलिपि',
             'tip': 'चयनित फाइलों की प्रतिलिपि बनाएं',
             'copy_suffix': ' की प्रति'
-        },
-        'fi': {  # Finnish
-            'label': 'Monista',
-            'tip': 'Monista valitut tiedostot',
-            'copy_suffix': ' - kopio'
-        },
-        'hu': {  # Hungarian
-            'label': 'Duplikálás',
-            'tip': 'Kiválasztott fájlok duplikálása',
-            'copy_suffix': ' - másolat'
         },
         'zh_CN': {  # Simplified Chinese
             'label': '复制',
