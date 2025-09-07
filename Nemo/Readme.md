@@ -6,7 +6,7 @@ A set of Nemo Extensions :
 
 All extensions are translated in 23 languages: English, German, Dutch, Swedish, Danish, Norwegian, Finnish, French, Italian, Spanish, Portuguese, Romanian, Polish, Hungarian, Russian, Hindi, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hebrew, Turkish.
 
-Place in `~/.local/share/nautilus-python/extensions`.
+Place in `~/.local/share/nemo-python/extensions`.
 
 The Nautilus contextual menu with the additionnal extensions
 
