@@ -10,369 +10,455 @@ from pathlib import Path
 from gi.repository import Nautilus, GObject, Gio
 from urllib.parse import unquote
 
-# Dictionnaire des traductions
-TRANSLATIONS = {
-    'en': {
-        'label': 'Label',
-        'remove_label': 'Remove Label',
-        'tip_assign': 'Assign color labels to files',
-        'tip_remove': 'Remove color label from files',
-        'colors': {
-            'blueberry': 'Blueberry',
-            'mint': 'Mint',
-            'lime': 'Lime',
-            'banana': 'Banana',
-            'orange': 'Orange',
-            'strawberry': 'Strawberry',
-            'bubblegum': 'Bubblegum',
-            'grape': 'Grape',
-            'cocoa': 'Cocoa',
-            'slate': 'Slate'
-        }
-    },
-    'fr': {
-        'label': 'Étiquette',
-        'remove_label': 'Supprimer l\'étiquette',
-        'tip_assign': 'Assigner des étiquettes de couleur aux fichiers',
-        'tip_remove': 'Supprimer l\'étiquette de couleur des fichiers',
-        'colors': {
-            'blueberry': 'Myrtille',
-            'mint': 'Menthe',
-            'lime': 'Citron vert',
-            'banana': 'Banane',
-            'orange': 'Orange',
-            'strawberry': 'Fraise',
-            'bubblegum': 'Chewing-gum',
-            'grape': 'Raisin',
-            'cocoa': 'Cacao',
-            'slate': 'Ardoise'
-        }
-    },
-    'de': {
-        'label': 'Etikett',
-        'remove_label': 'Etikett entfernen',
-        'tip_assign': 'Farbetiketten zu Dateien hinzufügen',
-        'tip_remove': 'Farbetikett von Dateien entfernen',
-        'colors': {
-            'blueberry': 'Heidelbeere',
-            'mint': 'Minze',
-            'lime': 'Limette',
-            'banana': 'Banane',
-            'orange': 'Orange',
-            'strawberry': 'Erdbeere',
-            'bubblegum': 'Kaugummi',
-            'grape': 'Traube',
-            'cocoa': 'Kakao',
-            'slate': 'Schiefer'
-        }
-    },
-    'nl': {
-        'label': 'Label',
-        'remove_label': 'Label verwijderen',
-        'tip_assign': 'Kleurlabels toewijzen aan bestanden',
-        'tip_remove': 'Kleurlabel verwijderen van bestanden',
-        'colors': {
-            'blueberry': 'Bosbes',
-            'mint': 'Munt',
-            'lime': 'Limoen',
-            'banana': 'Banaan',
-            'orange': 'Sinaasappel',
-            'strawberry': 'Aardbei',
-            'bubblegum': 'Kauwgom',
-            'grape': 'Druif',
-            'cocoa': 'Cacao',
-            'slate': 'Leisteen'
-        }
-    },
-    'sv': {
-        'label': 'Etikett',
-        'remove_label': 'Ta bort etikett',
-        'tip_assign': 'Tilldela färgetiketter till filer',
-        'tip_remove': 'Ta bort färgetikett från filer',
-        'colors': {
-            'blueberry': 'Blåbär',
-            'mint': 'Mint',
-            'lime': 'Lime',
-            'banana': 'Banan',
-            'orange': 'Orange',
-            'strawberry': 'Jordgubbe',
-            'bubblegum': 'Tuggummi',
-            'grape': 'Druva',
-            'cocoa': 'Kakao',
-            'slate': 'Skiffer'
-        }
-    },
-    'pl': {
-        'label': 'Etykieta',
-        'remove_label': 'Usuń etykietę',
-        'tip_assign': 'Przypisz kolorowe etykiety do plików',
-        'tip_remove': 'Usuń kolorową etykietę z plików',
-        'colors': {
-            'blueberry': 'Jagoda',
-            'mint': 'Mięta',
-            'lime': 'Limonka',
-            'banana': 'Banan',
-            'orange': 'Pomarańczowy',
-            'strawberry': 'Truskawka',
-            'bubblegum': 'Guma do żucia',
-            'grape': 'Winogrono',
-            'cocoa': 'Kakao',
-            'slate': 'Łupek'
-        }
-    },
-    'it': {
-        'label': 'Etichetta',
-        'remove_label': 'Rimuovi etichetta',
-        'tip_assign': 'Assegna etichette colorate ai file',
-        'tip_remove': 'Rimuovi etichetta colorata dai file',
-        'colors': {
-            'blueberry': 'Mirtillo',
-            'mint': 'Menta',
-            'lime': 'Lime',
-            'banana': 'Banana',
-            'orange': 'Arancia',
-            'strawberry': 'Fragola',
-            'bubblegum': 'Gomma da masticare',
-            'grape': 'Uva',
-            'cocoa': 'Cacao',
-            'slate': 'Ardesia'
-        }
-    },
-    'es': {
-        'label': 'Etiqueta',
-        'remove_label': 'Eliminar etiqueta',
-        'tip_assign': 'Asignar etiquetas de color a archivos',
-        'tip_remove': 'Eliminar etiqueta de color de archivos',
-        'colors': {
-            'blueberry': 'Arándano',
-            'mint': 'Menta',
-            'lime': 'Lima',
-            'banana': 'Plátano',
-            'orange': 'Naranja',
-            'strawberry': 'Fresa',
-            'bubblegum': 'Chicle',
-            'grape': 'Uva',
-            'cocoa': 'Cacao',
-            'slate': 'Pizarra'
-        }
-    },
-    'pt': {
-        'label': 'Etiqueta',
-        'remove_label': 'Remover etiqueta',
-        'tip_assign': 'Atribuir etiquetas coloridas aos arquivos',
-        'tip_remove': 'Remover etiqueta colorida dos arquivos',
-        'colors': {
-            'blueberry': 'Mirtilo',
-            'mint': 'Hortelã',
-            'lime': 'Lima',
-            'banana': 'Banana',
-            'orange': 'Laranja',
-            'strawberry': 'Morango',
-            'bubblegum': 'Chiclete',
-            'grape': 'Uva',
-            'cocoa': 'Cacau',
-            'slate': 'Ardósia'
-        }
-    },
-    'tr': {
-        'label': 'Etiket',
-        'remove_label': 'Etiketi kaldır',
-        'tip_assign': 'Dosyalara renkli etiketler atayın',
-        'tip_remove': 'Dosyalardan renkli etiketi kaldırın',
-        'colors': {
-            'blueberry': 'Yaban mersini',
-            'mint': 'Nane',
-            'lime': 'Misket limonu',
-            'banana': 'Muz',
-            'orange': 'Portakal',
-            'strawberry': 'Çilek',
-            'bubblegum': 'Sakız',
-            'grape': 'Üzüm',
-            'cocoa': 'Kakao',
-            'slate': 'Arduvaz'
-        }
-    },
-    'ja': {
-        'label': 'ラベル',
-        'remove_label': 'ラベルを削除',
-        'tip_assign': 'ファイルにカラーラベルを設定',
-        'tip_remove': 'ファイルからカラーラベルを削除',
-        'colors': {
-            'blueberry': 'ブルーベリー',
-            'mint': 'ミント',
-            'lime': 'ライム',
-            'banana': 'バナナ',
-            'orange': 'オレンジ',
-            'strawberry': 'イチゴ',
-            'bubblegum': 'バブルガム',
-            'grape': 'ブドウ',
-            'cocoa': 'ココア',
-            'slate': 'スレート'
-        }
-    },
-    'ko': {
-        'label': '라벨',
-        'remove_label': '라벨 제거',
-        'tip_assign': '파일에 색상 라벨 지정',
-        'tip_remove': '파일에서 색상 라벨 제거',
-        'colors': {
-            'blueberry': '블루베리',
-            'mint': '민트',
-            'lime': '라임',
-            'banana': '바나나',
-            'orange': '오렌지',
-            'strawberry': '딸기',
-            'bubblegum': '버블껌',
-            'grape': '포도',
-            'cocoa': '코코아',
-            'slate': '슬레이트'
-       }
-    },
-    'zh-cn': {
-        'label': '标签',
-        'remove_label': '移除标签',
-        'tip_assign': '为文件分配颜色标签',
-        'tip_remove': '从文件移除颜色标签',
-        'colors': {
-            'blueberry': '蓝莓',
-            'mint': '薄荷',
-            'lime': '酸橙',
-            'banana': '香蕉',
-            'orange': '橙子',
-            'strawberry': '草莓',
-            'bubblegum': '泡泡糖',
-            'grape': '葡萄',
-            'cocoa': '可可',
-            'slate': '石板'
-        }
-    },
-    'zh-tw': {
-        'label': '標籤',
-        'remove_label': '移除標籤',
-        'tip_assign': '為檔案分配顏色標籤',
-        'tip_remove': '從檔案移除顏色標籤',
-        'colors': {
-            'blueberry': '藍莓',
-            'mint': '薄荷',
-            'lime': '萊姆',
-            'banana': '香蕉',
-            'orange': '橘子',
-            'strawberry': '草莓',
-            'bubblegum': '泡泡糖',
-            'grape': '葡萄',
-            'cocoa': '可可',
-            'slate': '石板'
-        }
-    },
-    'ru': {
-        'label': 'Метка',
-        'remove_label': 'Удалить метку',
-        'tip_assign': 'Назначить цветные метки файлам',
-        'tip_remove': 'Удалить цветную метку с файлов',
-        'colors': {
-            'blueberry': 'Черника',
-            'mint': 'Мята',
-            'lime': 'Лайм',
-            'banana': 'Банан',
-            'orange': 'Апельсин',
-            'strawberry': 'Клубника',
-            'bubblegum': 'Жвачка',
-            'grape': 'Виноград',
-            'cocoa': 'Какао',
-            'slate': 'Сланец'
-        }
-    },
-    'ar': {
-        'label': 'تسمية',
-        'remove_label': 'إزالة التسمية',
-        'tip_assign': 'تعيين تسميات ملونة للملفات',
-        'tip_remove': 'إزالة التسمية الملونة من الملفات',
-        'colors': {
-            'blueberry': 'توت أزرق',
-            'mint': 'نعناع',
-            'lime': 'ليمون أخضر',
-            'banana': 'موز',
-            'orange': 'برتقالي',
-            'strawberry': 'فراولة',
-            'bubblegum': 'علكة',
-            'grape': 'عنب',
-            'cocoa': 'كاكاو',
-            'slate': 'إردواز'
-        }
-    },
-    'hi': {
-        'label': 'लेबल',
-        'remove_label': 'लेबल हटाएं',
-        'tip_assign': 'फाइलों पर रंगीन लेबल लगाएं',
-        'tip_remove': 'फाइलों से रंगीन लेबल हटाएं',
-        'colors': {
-            'blueberry': 'ब्लूबेरी',
-            'mint': 'पुदीना',
-            'lime': 'नींबू',
-            'banana': 'केला',
-            'orange': 'संतरा',
-            'strawberry': 'स्ट्रॉबेरी',
-            'bubblegum': 'च्यूइंगम',
-            'grape': 'अंगूर',
-            'cocoa': 'कोकोआ',
-            'slate': 'स्लेट'
+def get_localized_text():
+    """Returns texts according to system language"""
+    
+    # Translations
+    translations = {
+        'en': {  # English (default)
+            'label': 'Label',
+            'remove_label': 'Remove Label',
+            'tip_assign': 'Assign color labels to files',
+            'tip_remove': 'Remove color label from files',
+            'colors': {
+                'blueberry': 'Blueberry',
+                'mint': 'Mint',
+                'lime': 'Lime',
+                'banana': 'Banana',
+                'orange': 'Orange',
+                'strawberry': 'Strawberry',
+                'bubblegum': 'Bubblegum',
+                'grape': 'Grape',
+                'cocoa': 'Cocoa',
+                'slate': 'Slate'
+            }
+        },
+        'de': {  # German
+            'label': 'Etikett',
+            'remove_label': 'Etikett entfernen',
+            'tip_assign': 'Farbetiketten zu Dateien hinzufügen',
+            'tip_remove': 'Farbetikett von Dateien entfernen',
+            'colors': {
+                'blueberry': 'Heidelbeere',
+                'mint': 'Minze',
+                'lime': 'Limette',
+                'banana': 'Banane',
+                'orange': 'Orange',
+                'strawberry': 'Erdbeere',
+                'bubblegum': 'Kaugummi',
+                'grape': 'Traube',
+                'cocoa': 'Kakao',
+                'slate': 'Schiefer'
+            }
+        },
+        'nl': {  # Dutch
+            'label': 'Label',
+            'remove_label': 'Label verwijderen',
+            'tip_assign': 'Kleurlabels toewijzen aan bestanden',
+            'tip_remove': 'Kleurlabel verwijderen van bestanden',
+            'colors': {
+                'blueberry': 'Bosbes',
+                'mint': 'Munt',
+                'lime': 'Limoen',
+                'banana': 'Banaan',
+                'orange': 'Sinaasappel',
+                'strawberry': 'Aardbei',
+                'bubblegum': 'Kauwgom',
+                'grape': 'Druif',
+                'cocoa': 'Cacao',
+                'slate': 'Leisteen'
+            }
+        },
+        'sv': {  # Swedish
+            'label': 'Etikett',
+            'remove_label': 'Ta bort etikett',
+            'tip_assign': 'Tilldela färgetiketter till filer',
+            'tip_remove': 'Ta bort färgetikett från filer',
+            'colors': {
+                'blueberry': 'Blåbär',
+                'mint': 'Mynta',
+                'lime': 'Lime',
+                'banana': 'Banan',
+                'orange': 'Apelsin',
+                'strawberry': 'Jordgubbe',
+                'bubblegum': 'Tuggummi',
+                'grape': 'Druva',
+                'cocoa': 'Kakao',
+                'slate': 'Skiffer'
+            }
+        },
+        'da': {  # Danish
+            'label': 'Etiket',
+            'remove_label': 'Fjern etiket',
+            'tip_assign': 'Tildel farveetiketter til filer',
+            'tip_remove': 'Fjern farveetiket fra filer',
+            'colors': {
+                'blueberry': 'Blåbær',
+                'mint': 'Mynte',
+                'lime': 'Lime',
+                'banana': 'Banan',
+                'orange': 'Orange',
+                'strawberry': 'Jordbær',
+                'bubblegum': 'Tyggegummi',
+                'grape': 'Drue',
+                'cocoa': 'Kakao',
+                'slate': 'Skifer'
+            }
+        },
+        'no': {  # Norwegian
+            'label': 'Etikett',
+            'remove_label': 'Fjern etikett',
+            'tip_assign': 'Tildel fargetiketter til filer',
+            'tip_remove': 'Fjern fargetikett fra filer',
+            'colors': {
+                'blueberry': 'Blåbær',
+                'mint': 'Mynte',
+                'lime': 'Lime',
+                'banana': 'Banan',
+                'orange': 'Appelsin',
+                'strawberry': 'Jordbær',
+                'bubblegum': 'Tyggegummi',
+                'grape': 'Drue',
+                'cocoa': 'Kakao',
+                'slate': 'Skifer'
+            }
+        },
+        'fi': {  # Finnish
+            'label': 'Tunniste',
+            'remove_label': 'Poista tunniste',
+            'tip_assign': 'Määritä värillisiä tunnisteita tiedostoille',
+            'tip_remove': 'Poista värillinen tunniste tiedostoista',
+            'colors': {
+                'blueberry': 'Mustikka',
+                'mint': 'Minttu',
+                'lime': 'Limetti',
+                'banana': 'Banaani',
+                'orange': 'Appelsiini',
+                'strawberry': 'Mansikka',
+                'bubblegum': 'Purukumi',
+                'grape': 'Rypäle',
+                'cocoa': 'Kaakao',
+                'slate': 'Liuske'
+            }
+        },
+        'fr': {  # French
+            'label': 'Étiquette',
+            'remove_label': 'Supprimer l\'étiquette',
+            'tip_assign': 'Assigner des étiquettes de couleur aux fichiers',
+            'tip_remove': 'Supprimer l\'étiquette de couleur des fichiers',
+            'colors': {
+                'blueberry': 'Myrtille',
+                'mint': 'Menthe',
+                'lime': 'Citron vert',
+                'banana': 'Banane',
+                'orange': 'Orange',
+                'strawberry': 'Fraise',
+                'bubblegum': 'Chewing-gum',
+                'grape': 'Raisin',
+                'cocoa': 'Cacao',
+                'slate': 'Ardoise'
+            }
+        },
+        'it': {  # Italian
+            'label': 'Etichetta',
+            'remove_label': 'Rimuovi etichetta',
+            'tip_assign': 'Assegna etichette colorate ai file',
+            'tip_remove': 'Rimuovi etichetta colorata dai file',
+            'colors': {
+                'blueberry': 'Mirtillo',
+                'mint': 'Menta',
+                'lime': 'Lime',
+                'banana': 'Banana',
+                'orange': 'Arancia',
+                'strawberry': 'Fragola',
+                'bubblegum': 'Gomma da masticare',
+                'grape': 'Uva',
+                'cocoa': 'Cacao',
+                'slate': 'Ardesia'
+            }
+        },
+        'es': {  # Spanish
+            'label': 'Etiqueta',
+            'remove_label': 'Eliminar etiqueta',
+            'tip_assign': 'Asignar etiquetas de color a archivos',
+            'tip_remove': 'Eliminar etiqueta de color de archivos',
+            'colors': {
+                'blueberry': 'Arándano',
+                'mint': 'Menta',
+                'lime': 'Lima',
+                'banana': 'Plátano',
+                'orange': 'Naranja',
+                'strawberry': 'Fresa',
+                'bubblegum': 'Chicle',
+                'grape': 'Uva',
+                'cocoa': 'Cacao',
+                'slate': 'Pizarra'
+            }
+        },
+        'pt': {  # Portuguese
+            'label': 'Etiqueta',
+            'remove_label': 'Remover etiqueta',
+            'tip_assign': 'Atribuir etiquetas coloridas a arquivos',
+            'tip_remove': 'Remover etiqueta colorida de arquivos',
+            'colors': {
+                'blueberry': 'Mirtilo',
+                'mint': 'Hortelã',
+                'lime': 'Lima',
+                'banana': 'Banana',
+                'orange': 'Laranja',
+                'strawberry': 'Morango',
+                'bubblegum': 'Chiclete',
+                'grape': 'Uva',
+                'cocoa': 'Cacau',
+                'slate': 'Ardósia'
+            }
+        },
+        'ro': {  # Romanian
+            'label': 'Etichetă',
+            'remove_label': 'Șterge eticheta',
+            'tip_assign': 'Atribuie etichete colorate fișierelor',
+            'tip_remove': 'Șterge eticheta colorată de pe fișiere',
+            'colors': {
+                'blueberry': 'Afină',
+                'mint': 'Mentă',
+                'lime': 'Lămâie verde',
+                'banana': 'Banană',
+                'orange': 'Portocală',
+                'strawberry': 'Căpșună',
+                'bubblegum': 'Gumă de mestecat',
+                'grape': 'Strugure',
+                'cocoa': 'Cacao',
+                'slate': 'Ardezie'
+            }
+        },
+        'pl': {  # Polish
+            'label': 'Etykieta',
+            'remove_label': 'Usuń etykietę',
+            'tip_assign': 'Przypisz kolorowe etykiety do plików',
+            'tip_remove': 'Usuń kolorową etykietę z plików',
+            'colors': {
+                'blueberry': 'Jagoda',
+                'mint': 'Mięta',
+                'lime': 'Limonka',
+                'banana': 'Banan',
+                'orange': 'Pomarańcza',
+                'strawberry': 'Truskawka',
+                'bubblegum': 'Guma do żucia',
+                'grape': 'Winogrono',
+                'cocoa': 'Kakao',
+                'slate': 'Łupek'
+            }
+        },
+        'hu': {  # Hungarian
+            'label': 'Címke',
+            'remove_label': 'Címke eltávolítása',
+            'tip_assign': 'Színes címkék hozzárendelése fájlokhoz',
+            'tip_remove': 'Színes címke eltávolítása fájlokról',
+            'colors': {
+                'blueberry': 'Áfonya',
+                'mint': 'Menta',
+                'lime': 'Lime',
+                'banana': 'Banán',
+                'orange': 'Narancs',
+                'strawberry': 'Eper',
+                'bubblegum': 'Rágógumi',
+                'grape': 'Szőlő',
+                'cocoa': 'Kakaó',
+                'slate': 'Pala'
+            }
+        },
+        'ru': {  # Russian
+            'label': 'Метка',
+            'remove_label': 'Удалить метку',
+            'tip_assign': 'Назначить цветные метки файлам',
+            'tip_remove': 'Удалить цветную метку с файлов',
+            'colors': {
+                'blueberry': 'Черника',
+                'mint': 'Мята',
+                'lime': 'Лайм',
+                'banana': 'Банан',
+                'orange': 'Апельсин',
+                'strawberry': 'Клубника',
+                'bubblegum': 'Жвачка',
+                'grape': 'Виноград',
+                'cocoa': 'Какао',
+                'slate': 'Сланец'
+            }
+        },
+        'zh_CN': {  # Simplified Chinese
+            'label': '标签',
+            'remove_label': '移除标签',
+            'tip_assign': '为文件分配颜色标签',
+            'tip_remove': '从文件移除颜色标签',
+            'colors': {
+                'blueberry': '蓝莓',
+                'mint': '薄荷',
+                'lime': '酸橙',
+                'banana': '香蕉',
+                'orange': '橙子',
+                'strawberry': '草莓',
+                'bubblegum': '泡泡糖',
+                'grape': '葡萄',
+                'cocoa': '可可',
+                'slate': '石板'
+            }
+        },
+        'zh_TW': {  # Traditional Chinese
+            'label': '標籤',
+            'remove_label': '移除標籤',
+            'tip_assign': '為檔案分配顏色標籤',
+            'tip_remove': '從檔案移除顏色標籤',
+            'colors': {
+                'blueberry': '藍莓',
+                'mint': '薄荷',
+                'lime': '萊姆',
+                'banana': '香蕉',
+                'orange': '橘子',
+                'strawberry': '草莓',
+                'bubblegum': '泡泡糖',
+                'grape': '葡萄',
+                'cocoa': '可可',
+                'slate': '石板'
+            }
+        },
+        'ja': {  # Japanese
+            'label': 'ラベル',
+            'remove_label': 'ラベルを削除',
+            'tip_assign': 'ファイルにカラーラベルを設定',
+            'tip_remove': 'ファイルからカラーラベルを削除',
+            'colors': {
+                'blueberry': 'ブルーベリー',
+                'mint': 'ミント',
+                'lime': 'ライム',
+                'banana': 'バナナ',
+                'orange': 'オレンジ',
+                'strawberry': 'イチゴ',
+                'bubblegum': 'バブルガム',
+                'grape': 'ブドウ',
+                'cocoa': 'ココア',
+                'slate': 'スレート'
+            }
+        },
+        'ko': {  # Korean
+            'label': '라벨',
+            'remove_label': '라벨 제거',
+            'tip_assign': '파일에 컬러 라벨 할당',
+            'tip_remove': '파일에서 컬러 라벨 제거',
+            'colors': {
+                'blueberry': '블루베리',
+                'mint': '민트',
+                'lime': '라임',
+                'banana': '바나나',
+                'orange': '오렌지',
+                'strawberry': '딸기',
+                'bubblegum': '버블껌',
+                'grape': '포도',
+                'cocoa': '코코아',
+                'slate': '슬레이트'
+            }
+        },
+        'ar': {  # Arabic
+            'label': 'تسمية',
+            'remove_label': 'إزالة التسمية',
+            'tip_assign': 'تعيين تسميات ملونة للملفات',
+            'tip_remove': 'إزالة التسمية الملونة من الملفات',
+            'colors': {
+                'blueberry': 'توت أزرق',
+                'mint': 'نعناع',
+                'lime': 'ليمون أخضر',
+                'banana': 'موز',
+                'orange': 'برتقال',
+                'strawberry': 'فراولة',
+                'bubblegum': 'علكة',
+                'grape': 'عنب',
+                'cocoa': 'كاكاو',
+                'slate': 'أردواز'
+            }
+        },
+        'he': {  # Hebrew
+            'label': 'תווית',
+            'remove_label': 'הסר תווית',
+            'tip_assign': 'הקצה תוויות צבעוניות לקבצים',
+            'tip_remove': 'הסר תווית צבעונית מקבצים',
+            'colors': {
+                'blueberry': 'אוכמנית',
+                'mint': 'נענע',
+                'lime': 'ליים',
+                'banana': 'בננה',
+                'orange': 'כתום',
+                'strawberry': 'תות שדה',
+                'bubblegum': 'מסטיק',
+                'grape': 'ענב',
+                'cocoa': 'קקאו',
+                'slate': 'צפחה'
+            }
+        },
+        'tr': {  # Turkish
+            'label': 'Etiket',
+            'remove_label': 'Etiketi kaldır',
+            'tip_assign': 'Dosyalara renkli etiketler ata',
+            'tip_remove': 'Dosyalardan renkli etiketi kaldır',
+            'colors': {
+                'blueberry': 'Yaban mersini',
+                'mint': 'Nane',
+                'lime': 'Misket limonu',
+                'banana': 'Muz',
+                'orange': 'Portakal',
+                'strawberry': 'Çilek',
+                'bubblegum': 'Sakız',
+                'grape': 'Üzüm',
+                'cocoa': 'Kakao',
+                'slate': 'Arduvaz'
+            }
         }
     }
-}
-
-def get_system_language():
-    """Détecte la langue du système"""
+    
     try:
-        # Essayer d'abord la variable d'environnement LANGUAGE
-        lang = os.environ.get('LANGUAGE', '').split(':')[0]
-        if not lang:
-            # Puis essayer LANG
-            lang = os.environ.get('LANG', '').split('.')[0]
-        if not lang:
-            # En dernier recours, utiliser locale
-            lang = locale.getlocale()[0]
+        # Get system language variables
+        lang_env = os.environ.get('LANG', '').lower()
+        lc_messages = os.environ.get('LC_MESSAGES', '').lower()
+        
+        try:
+            system_locale = locale.getdefaultlocale()[0]
+            if system_locale:
+                system_locale = system_locale.lower()
+        except:
+            system_locale = ''
+        
+        # Function to detect language
+        def detect_language():
+            # List of sources to check (by priority order)
+            sources = [lc_messages, lang_env, system_locale]
+            
+            for source in sources:
+                if not source:
+                    continue
+                    
+                # Check Chinese variants
+                if 'zh_cn' in source or 'zh-cn' in source:
+                    return 'zh_CN'
+                elif 'zh_tw' in source or 'zh-tw' in source or 'zh_hk' in source:
+                    return 'zh_TW'
+                    
+                # Check other languages
+                for lang_code in translations.keys():
+                    if lang_code.startswith('zh'):  # Already handled above
+                        continue
+                    if source.startswith(lang_code + '_') or source.startswith(lang_code + '-'):
+                        return lang_code
+            
+            # Default language
+            return 'en'
+        
+        detected_lang = detect_language()
+        return translations.get(detected_lang, translations['en'])
+        
+    except Exception:
+        # In case of error, use English
+        return translations['en']
 
-        if lang:
-            # Normaliser le code de langue
-            lang_lower = lang.lower().replace('_', '-')
-            if lang_lower.startswith('fr'):
-                return 'fr'
-            elif lang_lower.startswith('de'):
-                return 'de'
-            elif lang_lower.startswith('nl'):
-                return 'nl'
-            elif lang_lower.startswith('it'):
-                return 'it'
-            elif lang_lower.startswith('es'):
-                return 'es'
-            elif lang_lower.startswith('ja'):
-                return 'ja'
-            elif lang_lower.startswith('zh-cn') or lang_lower == 'zh-hans':
-                return 'zh-cn'
-            elif lang_lower.startswith('zh-tw') or lang_lower == 'zh-hant':
-                return 'zh-tw'
-            elif lang_lower.startswith('zh'):
-                return 'zh-cn'  # Par défaut chinois simplifié
-            elif lang_lower.startswith('ru'):
-                return 'ru'
-            elif lang_lower.startswith('ko'):
-                return 'ko'
-            elif lang_lower.startswith('pl'):
-                return 'pl'
-            elif lang_lower.startswith('pt'):
-                return 'pt'
-            elif lang_lower.startswith('ar'):
-                return 'ar'
-            elif lang_lower.startswith('tr'):
-                return 'tr'
-            elif lang_lower.startswith('sv'):
-                return 'sv'
-            elif lang_lower.startswith('hi'):
-                return 'hi'
-    except Exception as e:
-        print(f"Error detecting language: {e}")
-
-    return 'en'  # Par défaut anglais
+# Get localized texts
+TEXTS = get_localized_text()
 
 class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.InfoProvider):
 
@@ -429,41 +515,38 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
 
     def __init__(self):
         super().__init__()
-        self.current_language = get_system_language()
-        self.translations = TRANSLATIONS.get(self.current_language, TRANSLATIONS['en'])
-
-        # Vérifier et créer les emblèmes si nécessaire
+        # Check and create emblems if necessary
         self.ensure_emblems_exist()
 
     def ensure_emblems_exist(self):
-        """Vérifie et crée les emblèmes SVG s'ils n'existent pas"""
+        """Check and create SVG emblems if they don't exist"""
         emblem_dir = Path.home() / '.local' / 'share' / 'icons' / 'hicolor' / '16x16' / 'emblems'
 
         try:
-            # Créer le répertoire s'il n'existe pas
+            # Create directory if it doesn't exist
             emblem_dir.mkdir(parents=True, exist_ok=True)
 
-            # Vérifier si tous les emblèmes existent
+            # Check if all emblems exist
             missing_emblems = []
             for color_id, color_info in self.COLORS.items():
                 emblem_file = emblem_dir / f"{color_info['emblem']}.svg"
                 if not emblem_file.exists():
                     missing_emblems.append((color_id, color_info))
 
-            # Créer les emblèmes manquants
+            # Create missing emblems
             if missing_emblems:
                 print(f"Creating {len(missing_emblems)} missing color emblems...")
                 for color_id, color_info in missing_emblems:
                     self.create_emblem_svg(color_info['emblem'], color_info['hex'], emblem_dir)
 
-                # Mettre à jour le cache d'icônes
+                # Update icon cache
                 self.update_icon_cache()
 
         except Exception as e:
             print(f"Error ensuring emblems exist: {e}")
 
     def create_emblem_svg(self, emblem_name, hex_color, emblem_dir):
-        """Crée un fichier SVG d'emblème coloré"""
+        """Create a colored emblem SVG file"""
         svg_content = f'''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    width="16"
@@ -495,7 +578,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
             print(f"Error creating {emblem_name}.svg: {e}")
 
     def update_icon_cache(self):
-        """Met à jour le cache d'icônes"""
+        """Update icon cache"""
         try:
             hicolor_dir = Path.home() / '.local' / 'share' / 'icons' / 'hicolor'
             subprocess.run(['gtk-update-icon-cache', str(hicolor_dir)],
@@ -505,21 +588,21 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
             print(f"Warning: Could not update icon cache: {e}")
 
     def get_file_items(self, files):
-        """Crée le menu Label avec sous-menu de couleurs"""
+        """Create Label menu with color submenu"""
         if not files:
             return []
 
         main_item = Nautilus.MenuItem(
             name='ColorLabels::main',
-            label=self.translations['label'],
-            tip=self.translations['tip_assign']
+            label=TEXTS['label'],
+            tip=TEXTS['tip_assign']
         )
 
         submenu = Nautilus.Menu()
         main_item.set_submenu(submenu)
 
         for color_id, color_info in self.COLORS.items():
-            color_name = self.translations['colors'].get(color_id, color_info['name'])
+            color_name = TEXTS['colors'].get(color_id, color_info['name'])
             color_item = Nautilus.MenuItem(
                 name=f'ColorLabels::{color_id}',
                 label=f"{color_info['emoji']} {color_name}",
@@ -528,30 +611,30 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
             color_item.connect('activate', self.apply_color_label, files, color_id)
             submenu.append_item(color_item)
 
-        # Ajouter une vraie ligne de séparation
+        # Add separator
         try:
-            # Essayer d'abord la méthode native pour les séparateurs
+            # Try native method for separators first
             submenu.append_separator()
         except AttributeError:
-            # Si append_separator n'existe pas, utiliser un MenuItem séparateur
+            # If append_separator doesn't exist, use separator MenuItem
             separator = Nautilus.MenuItem(
                 name='ColorLabels::separator',
                 label=None,
                 sensitive=False
             )
             try:
-                # Essayer de définir comme séparateur
+                # Try to set as separator
                 separator.set_property('separator', True)
             except:
-                # Dernier recours : utiliser une ligne fine discrète
+                # Last resort: use thin discrete line
                 separator.set_property('label', '————————————————')
 
             submenu.append_item(separator)
 
         remove_item = Nautilus.MenuItem(
             name='ColorLabels::remove',
-            label=self.translations["remove_label"],
-            tip=self.translations['tip_remove']
+            label=TEXTS["remove_label"],
+            tip=TEXTS['tip_remove']
         )
         remove_item.connect('activate', self.remove_color_label, files)
         submenu.append_item(remove_item)
@@ -559,7 +642,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
         return [main_item]
 
     def apply_color_label(self, menu, files, color_id):
-        """Applique un label de couleur aux fichiers sélectionnés"""
+        """Apply color label to selected files"""
         color_info = self.COLORS.get(color_id)
         if not color_info:
             return
@@ -569,16 +652,16 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
                 uri = file_info.get_uri()
                 file_path = unquote(uri.replace('file://', ''))
 
-                # 1. Supprimer l'emblème actuel
+                # 1. Remove current emblem
                 self.remove_emblem_metadata(file_path)
 
-                # 2. Ajouter le nouvel emblème directement via Nautilus (affichage immédiat)
+                # 2. Add new emblem directly via Nautilus (immediate display)
                 file_info.add_emblem(color_info['emblem'])
 
-                # 3. Stocker le nouvel emblème dans les métadonnées pour la persistance
+                # 3. Store new emblem in metadata for persistence
                 self.set_emblem_metadata(file_path, color_info['emblem'])
 
-                # 4. Rafraîchir immédiatement le fichier
+                # 4. Refresh file immediately
                 self.refresh_file(file_path)
 
             except Exception as e:
@@ -586,16 +669,16 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
                 continue
 
     def remove_color_label(self, menu, files):
-        """Supprime le label de couleur des fichiers sélectionnés"""
+        """Remove color label from selected files"""
         for file_info in files:
             try:
                 uri = file_info.get_uri()
                 file_path = unquote(uri.replace('file://', ''))
 
-                # 1. Supprimer l'emblème des métadonnées
+                # 1. Remove emblem from metadata
                 self.remove_emblem_metadata(file_path)
 
-                # 2. Rafraîchir le fichier
+                # 2. Refresh file
                 self.refresh_file(file_path)
 
             except Exception as e:
@@ -603,7 +686,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
                 continue
 
     def set_emblem_metadata(self, file_path, emblem):
-        """Stocke l'emblème dans les métadonnées du fichier"""
+        """Store emblem in file metadata"""
         try:
             file = Gio.File.new_for_path(file_path)
             file.set_attribute_string(
@@ -616,7 +699,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
             print(f"Failed to set emblem metadata: {e}")
 
     def remove_emblem_metadata(self, file_path):
-        """Supprime l'emblème des métadonnées du fichier"""
+        """Remove emblem from file metadata"""
         try:
             file = Gio.File.new_for_path(file_path)
             file.set_attribute_string(
@@ -629,18 +712,18 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
             print(f"Failed to remove emblem metadata: {e}")
 
     def refresh_file(self, file_path):
-        """Force le rafraîchissement du fichier dans Nautilus"""
+        """Force file refresh in Nautilus"""
         try:
-            # Utiliser Gio pour déclencher un événement de changement
+            # Use Gio to trigger change event
             file = Gio.File.new_for_path(file_path)
             file.monitor_file(Gio.FileMonitorFlags.NONE, None)
-            # Toucher le fichier pour forcer le rafraîchissement
+            # Touch file to force refresh
             os.utime(file_path, None)
         except Exception as e:
             print(f"Failed to refresh file: {e}")
 
     def update_file_info(self, file):
-        """Recharge les emblèmes depuis les métadonnées à chaque affichage"""
+        """Reload emblems from metadata on each display"""
         try:
             uri = file.get_uri()
             if not uri.startswith('file://'):
@@ -650,7 +733,7 @@ class ColorLabelsExtension(GObject.GObject, Nautilus.MenuProvider, Nautilus.Info
             if not os.path.exists(file_path):
                 return
 
-            # Récupérer l'emblème depuis les métadonnées
+            # Get emblem from metadata
             file_gio = Gio.File.new_for_path(file_path)
             info = file_gio.query_info(
                 'metadata::emblems',
