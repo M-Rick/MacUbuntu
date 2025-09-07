@@ -1,8 +1,8 @@
 A set of Nautilus Extensions :
 
-- Duplicate to ducplicate files directly. The extension will add a ` - copy` suffix to the ducplicated file.
+- Duplicate to duplicate files directly. The extension will add a ` - copy` suffix to the duplicated file.
 - Link to create a link. This feature exists in Nemo, but not in Nautilus. The extension will add a ` - link` suffix to the newly created link.
-- Lock manages files locking by adding an additionnal "Lock/Unlock" menu
+- Lock manages files locking by adding an additional "Lock/Unlock" menu.
 - Labels adds a color label on files, like in macOS and Pantheon Files and compatible with Nemo. Labels is compatible with Folder Color.
 
 All extensions are translated in 23 languages: English, German, Dutch, Swedish, Danish, Norwegian, Finnish, French, Italian, Spanish, Portuguese, Romanian, Polish, Hungarian, Russian, Hindi, Simplified Chinese, Traditional Chinese, Japanese, Korean, Arabic, Hebrew, Turkish.
