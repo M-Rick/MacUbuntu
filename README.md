@@ -1,5 +1,5 @@
 # MacUbuntu
-## A global menu for Gnome Shell and Pop!_OS (version 22 only)
+## A global menu for Ubuntu and Pop!_OS (version 22 only)
 
 The Cosmic Menu script will bring a global menu to the top of the screen in the Gnome desktop.
 All previous existing settings are backed up.
